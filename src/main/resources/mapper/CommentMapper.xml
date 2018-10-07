@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="ssm.blog.dao.CommentDao" >
+  <resultMap id="BaseResultMap" type="ssm.blog.domain.Comment" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="article_id" property="articleId" jdbcType="INTEGER" />
+    <result column="date" property="date" jdbcType="TIMESTAMP" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="ssm.blog.domain.Comment" extends="BaseResultMap" >
+    <result column="content" property="content" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, article_id, date, name, email
+  </sql>
+  <sql id="Blob_Column_List" >
+    content
+  </sql>
+
+  <select id="queryAll" resultMap="ResultMapWithBLOBs"  >
+    select *
+    from comment
+    where article_id = #{article_id}
+    ORDER BY id DESC
+    LIMIT #{offset}, #{limit}
+  </select>
+
+  <select id="countAllNum" resultType="java.lang.Integer">
+    SELECT count(*) FROM comment
+  </select>
+
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="int" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from comment
+    where id = #{id}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="int" >
+    delete from comment
+    where id = #{id}
+  </delete>
+  <insert id="insert" parameterType="ssm.blog.domain.Comment" >
+    insert into comment (id, article_id, date, 
+      name, email, content
+      )
+    values (#{id}, #{articleId}, #{date,jdbcType=TIMESTAMP}, 
+      #{name,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{content}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="ssm.blog.domain.Comment" >
+    insert into comment
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != 0" >
+        id,
+      </if>
+      <if test="articleId != 0" >
+        article_id,
+      </if>
+      <if test="date != null" >
+        date,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="email != null" >
+        email,
+      </if>
+      <if test="content != null" >
+        content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id},
+      </if>
+      <if test="articleId != null" >
+        #{articleId},
+      </if>
+      <if test="date != null" >
+        #{date,jdbcType=TIMESTAMP},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        #{content},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="ssm.blog.domain.Comment" >
+    update comment
+    <set >
+      <if test="articleId != 0" >
+        article_id = #{articleId},
+      </if>
+      <if test="date != null" >
+        date = #{date,jdbcType=TIMESTAMP},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        content = #{content},
+      </if>
+    </set>
+    where id = #{id}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="ssm.blog.domain.Comment" >
+    update comment
+    set article_id = #{articleId},
+      date = #{date,jdbcType=TIMESTAMP},
+      name = #{name,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      content = #{content}
+    where id = #{id}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="ssm.blog.domain.Comment" >
+    update comment
+    set article_id = #{articleId},
+      date = #{date,jdbcType=TIMESTAMP},
+      name = #{name,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR}
+    where id = #{id}
+  </update>
+</mapper>

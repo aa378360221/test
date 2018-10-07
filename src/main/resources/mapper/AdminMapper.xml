@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="ssm.blog.dao.AdminDao" >
+  <!--字段集合-->
+  <sql id="Base_Column_List" >
+    id, username, password
+  </sql>
+  <!--通过ID查询-->
+  <select id="selectByPrimaryKey" resultType="ssm.blog.domain.Admin" parameterType="int" >
+    select 
+    <include refid="Base_Column_List" />
+    from admin
+    where id = #{id}
+  </select>
+
+  <select id="getAdminAll" resultMap="BaseResultMap"  >
+    select
+    <include refid="Base_Column_List" />
+    from admin
+  </select>
+  <resultMap id="BaseResultMap" type="ssm.blog.domain.Admin" >
+    <id column="id" property="id"  />
+    <result column="username" property="username" />
+    <result column="password" property="password" />
+  </resultMap>
+  <!--通过ID删除-->
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from admin
+    where id = #{id}
+  </delete>
+  <!--满数据插入-->
+  <insert id="insert" parameterType="ssm.blog.domain.Admin" >
+    insert into admin (id, username, password
+    )
+    values (#{id,jdbcType=INTEGER}, #{username}, #{password}
+    )
+  </insert>
+  <!--部分数据的插入-->
+  <insert id="insertSelective" parameterType="ssm.blog.domain.Admin" >
+    insert into admin
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != 0" >
+        id,
+      </if>
+      <if test="username != null" >
+        username,
+      </if>
+      <if test="password != null" >
+        password,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id},
+      </if>
+      <if test="username != null" >
+        #{username},
+      </if>
+      <if test="password != null" >
+        #{password},
+      </if>
+    </trim>
+  </insert>
+  <!--更新-->
+  <update id="updateByPrimaryKeySelective" parameterType="ssm.blog.domain.Admin" >
+    update admin
+    <set >
+      <if test="username != null" >
+        username = #{username},
+      </if>
+      <if test="password != null" >
+        password = #{password},
+      </if>
+    </set>
+    where id = #{id}
+  </update>
+  <!---->
+  <update id="updateByPrimaryKey" parameterType="ssm.blog.domain.Admin" >
+    update admin
+    set username = #{username},
+    password = #{password}
+    where id = #{id}
+  </update>
+
+</mapper>

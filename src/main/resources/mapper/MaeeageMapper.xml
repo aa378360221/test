@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="ssm.blog.dao.MessageDao" >
+  <select id="selectMessages" resultType="ssm.blog.domain.Message">
+      select name,content,date from message order by date desc
+  </select>
+    <insert id="insertMessage" parameterType="ssm.blog.domain.Message">
+        insert into message values(#{id},#{name},#{content},#{date})
+    </insert>
+</mapper>
